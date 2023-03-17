@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Get Browser History</title>
+</head>
+<body>
+    <ul id="historyList"></ul>
+
+    <script>
+        // Get the user's browsing history from localStorage (if it exists)
+        var history = JSON.parse(localStorage.getItem('history')) || [];
+        // Add the current page URL to the history array
+        history.push(window.location.href);
+        // Save the updated history array to localStorage
+        localStorage.setItem('history', JSON.stringify(history));
+
+        // Display the browsing history
+        var historyList = document.getElementById('historyList');
+        for (var i = 0; i < history.length; i++) {
+            var listItem = document.createElement('li');
+            var listLink = document.createElement('a');
+            listLink.href = history[i];
+            listLink.textContent = history[i];
+            listItem.appendChild(listLink);
+            historyList.appendChild(listItem);
+        }
+
+        // Listen for changes to the URL
+        window.onpopstate = function(event) {
+            // Get the updated history array from localStorage
+            var history = JSON.parse(localStorage.getItem('history')) || [];
+            // Add the new page URL to the history array
+            history.push(window.location.href);
+            // Save the updated history array to localStorage
+            localStorage.setItem('history', JSON.stringify(history));
+
+            // Clear the history list and display the updated browsing history
+            historyList.innerHTML = '';
+            for (var i = 0; i < history.length; i++) {
+                var listItem = document.createElement('li');
+                var listLink = document.createElement('a');
+                listLink.href = history[i];
+                listLink.textContent = history[i];
+                listItem.appendChild(listLink);
+                historyList.appendChild(listItem);
+            }
+        };
+    </script>
+</body>
+</html>
